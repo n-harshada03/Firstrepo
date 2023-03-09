@@ -1,0 +1,117 @@
+#include <iostream>
+
+using namespace std;
+
+class Node{
+    public:
+    int data;
+    Node* next;
+    
+    //constructor
+    Node(int data){
+        this->data=data;
+        this->next=next;
+    }
+    //destructor
+    ~Node(){
+        int value=this->data;
+        //memory free
+        if(this->next!=NULL){
+            delete next;
+            this->next=NULL;
+        }
+        cout<<"memory is free from node with data "<<value<<endl;
+    }
+};
+
+void InsertAtHead(Node* &head,int data){
+    Node* temp=new Node(data);
+    temp->next=head;
+    head=temp;
+    
+}
+void InsertAtTail(Node* &tail,int data){
+    Node* temp= new Node(data);
+    tail->next=temp;
+    tail=temp;
+}
+void InsertAtPosition(Node* &head,Node* &tail,int position,int data){
+    // insert at head
+    if(position==1){
+        InsertAtHead(head,data);
+        return;
+    }
+    
+    Node* temp=head;
+    int i=1;
+    while(i<position-1){
+        temp=temp->next;
+        i++;
+    }
+    
+    // Insert at tail
+    if(temp->next==NULL){
+        InsertAtTail(tail,data);
+        return;
+    }
+    
+    // new node for data
+    Node* NodeToInsert=new Node(data);
+    NodeToInsert->next=temp->next;
+    temp->next=NodeToInsert;
+    
+}
+void DeleteNode(int position,Node* head){
+    //deleting start Node
+    if (position==1){
+        Node* temp=head;
+        head=head->next;
+        //memory free start Node
+        temp->next=NULL;
+        delete temp;
+    }
+    else{
+        //deleting middle node or last node
+        Node* curr=head;
+        Node* prev=NULL;
+        int cnt=1;
+        while(cnt<position){
+            prev=curr;
+            curr=curr->next;
+            cnt++;
+        }
+         prev->next=curr->next;
+         curr->next=NULL;
+         delete curr;
+    }
+    
+} 
+void Display(Node* &head){
+    Node* NewNode=head;
+    
+    while(NewNode!=NULL){
+        cout<<NewNode->data<<" ";
+        NewNode=NewNode->next;
+    }
+    cout<<endl;
+}
+
+int main()
+{
+    Node* node1=new Node(10);
+   
+    Node* head=node1;
+    Node* tail=node1;
+     
+    Display(head);
+    InsertAtHead(head,12);
+    Display(head);
+    InsertAtTail(tail,15);
+    Display(head);
+    InsertAtPosition(head,tail,3,30);
+    Display(head);
+    DeleteNode(2,head);
+    Display(head);
+    
+    return 0;
+}
